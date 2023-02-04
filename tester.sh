@@ -54,8 +54,9 @@ do
  	else
 		echo -n "$RED"KO"$RESET " && echo ❌ >> $LOGFILE 
 	fi
-	echo "Output: " >> $LOGFILE
+	echo "<<><><> START OF OUTPUT<><><>>" >> $LOGFILE
 	cat $TEMPFILE >> $LOGFILE
+	echo "<<><><> END OF OUTPUT<><><>>" >> $LOGFILE
 	i=$(expr $i + 1)
 done
 
