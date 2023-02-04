@@ -47,16 +47,17 @@ do
 	echo -n "$i: "
 	echo "\n\t--------------------- TEST $i ---------------------\n" >> $LOGFILE
 	echo -n "File: \"$test_file\" " >> $LOGFILE
-	$1/so_long $1/$test_file > $TEMPFILE 2>&1
+	$1/so_long $TESTS/$test_file > $TEMPFILE 2>&1
 
 	if [ $(grep Error $TEMPFILE) ]; then
 		echo -n "$GREEN"OK"$RESET " && echo ✅ >> $LOGFILE 
- 	else
-		echo -n "$RED"KO"$RESET " && echo ❌ >> $LOGFILE 
+		echo "<<><><> START OF OUTPUT<><><>>" >> $LOGFILE
+		cat $TEMPFILE >> $LOGFILE
+		echo "<<><><> END OF OUTPUT<><><>>" >> $LOGFILE
+	else
+		echo -n "$RED"KO"$RESET " && echo ❌ >> $LOGFILE
+		valgrind $1/so_long $TESTS/$test_file >> $LOGFILE 2>&1
 	fi
-	echo "<<><><> START OF OUTPUT<><><>>" >> $LOGFILE
-	cat $TEMPFILE >> $LOGFILE
-	echo "<<><><> END OF OUTPUT<><><>>" >> $LOGFILE
 	i=$(expr $i + 1)
 done
 
