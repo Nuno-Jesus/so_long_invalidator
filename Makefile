@@ -10,7 +10,7 @@ CYAN 	= \033[1;36m
 WHITE 	= \033[1;37m
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ COMMANDS _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
-
+PY = python3 -B
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ FLAGS _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
 MKFLAGS = --no-print-directory
@@ -30,5 +30,11 @@ clean:
 fclean: 
 	make fclean $(MKFLAGS) -C $(PROJ)
 
+gen:
+	$(PY) generator.py
+
+c:
+	rm -rf maps/generated/*
+	
 .SILENT:
 re: fclean all

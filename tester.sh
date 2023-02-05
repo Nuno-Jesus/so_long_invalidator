@@ -52,7 +52,7 @@ do
 	if [ $(grep Error $TEMPFILE) ]; then
 		echo -n "$GREEN"OK"$RESET " && echo ✅ >> $LOGFILE 
 		echo "<<><><> START OF OUTPUT<><><>>" >> $LOGFILE
-		cat $TEMPFILE >> $LOGFILE
+		cat -e $TEMPFILE >> $LOGFILE
 		echo "<<><><> END OF OUTPUT<><><>>" >> $LOGFILE
 	else
 		echo -n "$RED"KO"$RESET " && echo ❌ >> $LOGFILE
