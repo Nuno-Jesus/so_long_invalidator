@@ -22,6 +22,8 @@ PROJ = ../so_long
 all: setup
 
 setup: 
+	echo "Checking for updates"
+	git pull origin main
 	sh tester.sh $(PROJ)
 	
 clean:

@@ -16,7 +16,18 @@ In order to correctly execute the tool, you must:
 - have either [Ubuntu](https://ubuntu.com/download) or [WSL](https://learn.microsoft.com/en-us/windows/wsl/install) on your computer;
 - install [pip](https://linuxize.com/post/how-to-install-pip-on-ubuntu-20.04/) **ONLY IF** there is a missing package that you might need to install manually (text me, otherwise I won't know);
 
-## Great, I managed to do it! What's next?
+## Repository contents
+
+|Folder/File|Description|
+|:--:|:--:|
+|maps/valid/| Maps that your project should accept |
+|maps/invalid/| Maps that your project should not accept (used by the py script) |
+|maps/generated/| Generated maps after running the python script |
+|generator.py| The python script to automate maps generation |
+|tester.sh| The shell script used to fetch the output from your project |
+
+
+## Next steps
 **1.** Fork/download the code from the repository to any path of your choice in your computer (the best would be to sit right next to your **so_long** folder, like described below)
 
 **2.** If your directory tree looks like this...
