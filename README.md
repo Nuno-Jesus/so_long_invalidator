@@ -9,7 +9,7 @@ This tool is currently **ONLY** performing tests to ensure your project does not
 **You are free to fork the repository and study/modify/test the code on your own**. However, I would really appreciate it if you could text me on Slack (**ncarvalh**) whenever you find a bug or you have a suggestion, so I can properly introduce hotfixes or deploy some quality-of-life patches that can benefit the 42 community in general.
 
 ## Are there any pre-requirements?
-> If you're planning on running the tool in the 42 clusters, you can skip this section. Make sure your so_long project has a functional Makefile with all the mandatory rules.
+> Make sure your so_long project has a functional Makefile with all the mandatory rules.
 
 In order to correctly execute the tool, you must:
 - have [Python](https://www.python.org/downloads/) installed;
