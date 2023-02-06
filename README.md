@@ -59,13 +59,13 @@ The Makefile was configured to pull updates from the repository, so its ok if it
 
 | Correct Output |
 |:--:|
-|![Correct Output]()|
+|![Correct Output](https://user-images.githubusercontent.com/93390807/217015792-6d5bdd6f-4ca6-4e7e-9a4c-9761deb0e802.png)|
 
 or this, if any misconfiguration of any kind happened:
 
 | Error Output |
 |:--:|
-|![Error Output]()|
+|![Error Output](https://user-images.githubusercontent.com/93390807/217015797-c3455a92-69be-45de-9024-8cb896279614.png)|
 
 ## Generating maps
 
@@ -77,7 +77,7 @@ A glimpse on how the script should behave
 
 | Map Generation Script |
 |:--:|
-|![Map Generation Script]()|
+|![Map Generation Script](https://user-images.githubusercontent.com/93390807/217015799-e3aabe37-f8ea-4b21-9e94-7496a4825c8c.png)|
 
 ## Author
 
