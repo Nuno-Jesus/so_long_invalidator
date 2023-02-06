@@ -51,9 +51,9 @@ do
 
 	if [ $(grep Error $TEMPFILE) ]; then
 		echo -n "$GREEN"OK"$RESET " && echo ✅ >> $LOGFILE 
-		echo "<<><><> START OF OUTPUT<><><>>" >> $LOGFILE
+		echo "-------- START OF OUTPUT --------" >> $LOGFILE
 		cat -e $TEMPFILE >> $LOGFILE
-		echo "<<><><> END OF OUTPUT<><><>>" >> $LOGFILE
+		echo "--------- END OF OUTPUT ---------" >> $LOGFILE
 	else
 		echo -n "$RED"KO"$RESET " && echo ❌ >> $LOGFILE
 		valgrind $1/so_long $TESTS/$test_file >> $LOGFILE 2>&1
