@@ -3,27 +3,14 @@ import os
 from colorama import Style
 from colorama import Fore
 
+# COLOR MACROS
 RESET = Style.RESET_ALL
 LRED = Fore.LIGHTRED_EX
 LYELLOW = Fore.LIGHTYELLOW_EX
 LBLUE = Fore.LIGHTBLUE_EX
 LGREEN = Fore.LIGHTGREEN_EX
 
-"""
-	While the x and y are not valid:
-		Ask for the x and y
-
-	First check if the filename used already exists
-	If yes :
-		Increment the number of the generated file
-	Else:
-		Create a new file called "map{N}.ber"
-	
-	
-	Apply the dimensions to a newly created map
-
-"""
-
+# OTHER MACROS
 ENTITIES = "01C"
 GEN_PATH = "maps/generated"
 
@@ -52,14 +39,12 @@ def generate_map(filename, x, y) -> None:
 	ey = random.randint(1, y - 2)
 	ex = random.randint(1, x - 2)
 
-	#print(f'Player (Y/X): ({py}/{px})')
-	#print(f'Exit (Y/X): ({ey}/{ex})')
 	contents[py][px] = 'P'
 	contents[ey][ex] = 'E'
 
 	f = open(filename, "x")
 	for line in contents:
-		print("".join(line), end ='') 
+		print("".join(line), end = '') 
 		f.write("".join(line))
 	f.close()
 	print(f'The map was saved in {LRED}{filename}{RESET}.')
@@ -82,7 +67,7 @@ if __name__ == "__main__" :
 			x = int(input(f'Width: '))
 			y = int(input(f'Height: '))
 		except ValueError:
-			print(f'\n\t===== {LRED}INPUT MUST BE A POSITIVE INT{RESET} =====\n')
+			print(f'\n\t===== {LRED}INPUT MUST BE BIGGER THAN 3{RESET} =====\n')
 
 	random.seed()		
 	generate_map(generate_file(), x, y)
