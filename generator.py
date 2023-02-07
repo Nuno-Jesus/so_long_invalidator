@@ -13,12 +13,13 @@ LGREEN = Fore.LIGHTGREEN_EX
 # OTHER MACROS
 GEN_PATH = "maps/generated"
 WALL_PROBABILITY = 0.80
+COIN_PROBABILITY = 0.80
 HORIZONTAL = 0
 VERTICAL = 1
 DIRECTIONS = [HORIZONTAL, VERTICAL]
 
 def generate_coins(contents, x, y) -> None:
-	num_coins = random.randint(0, 15)
+	num_coins = random.randint(0, max(x, y) * COIN_PROBABILITY)
 	print(f"Num coins: {num_coins}")
 
 	for i in range(0, num_coins):
@@ -42,6 +43,7 @@ def generate_player_and_exit(contents, x, y) -> None:
 	contents[ey][ex] = 'E'
 
 
+""" 
 def flood_fill(contents, point, dims, prob):
 	if contents[point[1]][point[0]] != '0' or \
 		point[1] not in range(0, dims[1] - 1) or \
@@ -58,9 +60,9 @@ def flood_fill(contents, point, dims, prob):
 	flood_fill(contents, [point[0], point[1] + 1], dims, int(prob * WALL_PROBABILITY))	#D
 
 def draw_walls(contents, point, len, dims):
-	for i in range(point[0], min(point[0] + len, dims[0] - 1)):
+	stop = min(point[0] + len, dims[0] - 1)
+	for i in range(point[0], stop):
 		contents[point[1]][point[0] + i] = '1'
-
 def generate_walls(contents, x, y):
 	num_points = random.randint(1, max(x, y) / 2)
 
@@ -71,6 +73,28 @@ def generate_walls(contents, x, y):
 		len = random.randint(1, x - 2)
 		draw_walls(contents, [px, py], len, [x, y])
 		#flood_fill(contents, [px, py], [x, y], 100)
+"""
+
+def generate_walls(contents, x, y):
+	for line in contents[2::2]:
+		px = random.randint(0, x - 1)
+		width = random.randint(0, x - 1)
+		
+		print(f'{line} -> x = {px} width = {width}')
+		i = 0
+		for i in range (0, x - 1):
+			if line[i] == '0' and i in range(px, px + width):
+				line[i] = '1'
+			i += 1
+	
+	for i in range(0, x - 1, 3):
+		py = random.randint(0, y - 1)
+		width = random.randint(0, y - 1)
+		
+		print(f'col -> y = {py} width = {width}')
+		for k in range (0, y - 1):
+			if contents[k][i] == '0' and k in range(py, py + width):
+				contents[k][i] = '1'
 
 def generate_map(filename, x, y) -> None:
 	contents = []
@@ -94,18 +118,9 @@ def generate_map(filename, x, y) -> None:
 	f.close()
 	print(f'The map was saved in {LRED}{filename}{RESET}.')
 
-
-def generate_file() -> str:
-	n = 1
-	
-	while os.path.exists(f'{GEN_PATH}/map{n}.ber'):
-		n += 1
-	
-	return (f'{GEN_PATH}/map{n}.ber')
-
 if __name__ == "__main__" :
-	x = -1
-	y = -1
+	n = 1
+	x, y = -1, -1
 
 	while y < 3 or x < 3:
 		try:
@@ -113,8 +128,11 @@ if __name__ == "__main__" :
 			y = int(input(f'Height: '))
 		except ValueError:
 			print(f'\n\t===== {LRED}INPUT MUST BE BIGGER THAN 2{RESET} =====\n')
-
+	
+	while os.path.exists(f'{GEN_PATH}/map{n}.ber'):
+		n += 1
+	
+	random.seed()
 	print(f'Dims (x/y): {[x, y]}')
-	random.seed()		
-	generate_map(generate_file(), x, y)
+	generate_map(f'{GEN_PATH}/map{n}.ber', x, y)
 	
