@@ -23,7 +23,7 @@ all: setup
 
 setup: 
 	echo "[$(CYAN)    Git    $(RESET)] Checking for updates..."
-	git pull origin main
+	# git pull origin main
 	sh tester.sh $(PROJ)
 	
 clean:
