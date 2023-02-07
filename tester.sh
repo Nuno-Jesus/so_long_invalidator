@@ -48,8 +48,8 @@ do
 	echo "\n\t--------------------- TEST $i ---------------------\n" >> $LOGFILE
 	echo -n "File: \"$test_file\" " >> $LOGFILE
 	$1/so_long $TESTS/$test_file > $TEMPFILE 2>&1
-
-	if [ $(grep Error $TEMPFILE) ]; then
+	
+	if [ "$(grep Error $TEMPFILE)" ]; then
 		echo -n "$GREEN"OK"$RESET " && echo ✅ >> $LOGFILE 
 		echo "-------- START OF OUTPUT --------" >> $LOGFILE
 		cat -e $TEMPFILE >> $LOGFILE
