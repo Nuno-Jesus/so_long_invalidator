@@ -26,7 +26,7 @@ def generate_coins(contents, x, y) -> None:
 		cy = random.randint(1, y - 2)
 		cx = random.randint(1, x - 2)
 		
-		print(f"Coin (X/Y): {[cx, cy]}")
+		#print(f"Coin (X/Y): {[cx, cy]}")
 		if contents[cy][cx] == '0':
 			contents[cy][cx] = 'C'
 
@@ -42,8 +42,6 @@ def generate_player_and_exit(contents, x, y) -> None:
 	contents[py][px] = 'P'
 	contents[ey][ex] = 'E'
 
-
-""" 
 def flood_fill(contents, point, dims, prob):
 	if contents[point[1]][point[0]] != '0' or \
 		point[1] not in range(0, dims[1] - 1) or \
@@ -59,28 +57,12 @@ def flood_fill(contents, point, dims, prob):
 	flood_fill(contents, [point[0], point[1] - 1], dims, int(prob * WALL_PROBABILITY))	#U
 	flood_fill(contents, [point[0], point[1] + 1], dims, int(prob * WALL_PROBABILITY))	#D
 
-def draw_walls(contents, point, len, dims):
-	stop = min(point[0] + len, dims[0] - 1)
-	for i in range(point[0], stop):
-		contents[point[1]][point[0] + i] = '1'
-def generate_walls(contents, x, y):
-	num_points = random.randint(1, max(x, y) / 2)
-
-	for i in range(0, num_points):
-		px = random.randint(1, x - 2)
-		py = random.randint(1, y - 2)
-		print(f"Point (X/Y): {[px, py]}")
-		len = random.randint(1, x - 2)
-		draw_walls(contents, [px, py], len, [x, y])
-		#flood_fill(contents, [px, py], [x, y], 100)
-"""
-
 def generate_walls(contents, x, y):
 	for line in contents[2::2]:
 		px = random.randint(0, x - 1)
 		width = random.randint(0, x - 1)
 		
-		print(f'{line} -> x = {px} width = {width}')
+		#print(f'{line} -> x = {px} width = {width}')
 		i = 0
 		for i in range (0, x - 1):
 			if line[i] == '0' and i in range(px, px + width):
@@ -91,10 +73,13 @@ def generate_walls(contents, x, y):
 		py = random.randint(0, y - 1)
 		width = random.randint(0, y - 1)
 		
-		print(f'col -> y = {py} width = {width}')
+		#print(f'col -> y = {py} width = {width}')
 		for k in range (0, y - 1):
 			if contents[k][i] == '0' and k in range(py, py + width):
 				contents[k][i] = '1'
+	
+	#flood_fill(contents, [px, py], [x, y], 100)
+
 
 def generate_map(filename, x, y) -> None:
 	contents = []
@@ -103,9 +88,6 @@ def generate_map(filename, x, y) -> None:
 	for _ in range(0, y - 2):
 		contents.append(['1'] + list((x - 2) * "0") + ['1', '\n'])
 	contents.append(['1' for _ in range(0, x)] + ['\n'])
-
-	for line in contents:
-		print("".join(line), end ="")
 
 	generate_player_and_exit(contents, x, y)
 	generate_coins(contents, x, y)
@@ -133,6 +115,5 @@ if __name__ == "__main__" :
 		n += 1
 	
 	random.seed()
-	print(f'Dims (x/y): {[x, y]}')
 	generate_map(f'{GEN_PATH}/map{n}.ber', x, y)
 	
