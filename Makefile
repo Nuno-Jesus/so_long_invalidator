@@ -16,14 +16,14 @@ PY = python3 -B
 MKFLAGS = --no-print-directory
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ FOLDERS _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
-PROJ = ../so_long
+PROJ = ../42_so_long
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ RULES _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
 all: setup
 
 setup: 
 	echo "[$(CYAN)    Git    $(RESET)] Checking for updates..."
-	# git pull origin main
+	git pull origin main
 	sh tester.sh $(PROJ)
 	
 clean:

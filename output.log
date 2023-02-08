@@ -1,0 +1,126 @@
+/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\
+|==|                                                        |==|
+|==|                       output.log                       |==|
+|==|              Wed 08 Feb 2023 12:12:26 PM WET              |==|
+|==|                                                        |==|
+\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/
+
+	--------------------- TEST 1 ---------------------
+
+File: "duplicate_exit.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has invalid entities.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 2 ---------------------
+
+File: "duplicate_player.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has invalid entities.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 3 ---------------------
+
+File: "empty_file.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map is empty.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 4 ---------------------
+
+File: "empty_line_at_start.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map is not rectangular.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 5 ---------------------
+
+File: "empty_line_in_between.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map is not rectangular.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 6 ---------------------
+
+File: "invalid_entities.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has invalid entities.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 7 ---------------------
+
+File: "no_coins.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has invalid entities.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 8 ---------------------
+
+File: "no_coins_path.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has not a traversable path to end the level.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 9 ---------------------
+
+File: "no_corner_walls.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map is not bounded by walls.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 10 ---------------------
+
+File: "no_exit.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has invalid entities.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 11 ---------------------
+
+File: "no_exit_path.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has not a traversable path to end the level.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 12 ---------------------
+
+File: "non_rectangular.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map is not rectangular.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 13 ---------------------
+
+File: "no_outter_walls.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map is not bounded by walls.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 14 ---------------------
+
+File: "no_player.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has invalid entities.$
+--------- END OF OUTPUT ---------
+
+	--------------------- TEST 15 ---------------------
+
+File: "one_character.ber" ✅
+-------- START OF OUTPUT --------
+Error$
+Map has invalid entities.$
+--------- END OF OUTPUT ---------
