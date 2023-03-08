@@ -19,13 +19,21 @@ MKFLAGS = --no-print-directory
 PROJ = ../so_long
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ RULES _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
-all: setup
 
-setup: 
+all: pull setup
+
+pull:
 	echo "[$(CYAN)    Git    $(RESET)] Checking for updates..."
 	# git pull origin main
-	sh tester.sh $(PROJ)
-	
+
+setup: 
+	sh tester.sh $(PROJ) all
+
+bonus: pull setup_bonus
+
+setup_bonus:
+	sh tester.sh $(PROJ) bonus
+
 clean:
 	make clean $(MKFLAGS) -C $(PROJ)
 
