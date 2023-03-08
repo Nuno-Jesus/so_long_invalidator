@@ -17,6 +17,7 @@ MKFLAGS = --no-print-directory
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ FOLDERS _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
 PROJ = ../so_long
+GEN = maps/generated
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ RULES _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
 
@@ -40,11 +41,14 @@ clean:
 fclean: 
 	make fclean $(MKFLAGS) -C $(PROJ)
 
-gen:
+$(GEN):
+	mkdir -p maps/generated
+
+gen: $(GEN)
 	$(PY) generator.py
 
-c:
-	rm -rf maps/generated/*
+cleangen:
+	rm -rf maps/generated
 	
 .SILENT:
 re: fclean all
