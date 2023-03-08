@@ -30,11 +30,33 @@ log_title()
 	echo "\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/" >> $LOGFILE
 }
 
+log_terminal()
+{
+	if [ $output ]; then
+		echo -n "$i: $GREEN"OK"$RESET "  
+	else
+		echo -n "$i: $RED"KO"$RESET "
+	fi
+}
+
+log_file()
+{
+	if [ $output ]; then
+		echo "\n[$WHITE#$i$RESET][$GREEN"SUCCESS"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
+	else
+		echo "\n[$WHITE#$i$RESET][$RED"FAILURE"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
+	fi
+
+	# echo "======== START OF OUTPUT ========" >> $LOGFILE
+	cat -e $TEMPFILE >> $LOGFILE
+	# echo "========= END OF OUTPUT =========" >> $LOGFILE
+	if [ ! $output ]; then
+		valgrind $path/$program $TESTS/$test_file >> $LOGFILE 2>&1
+	fi	
+}
+
 compile()
 {
-	path=$1
-	rule=$2
-
 	# Remove any previous generated output files
 	rm -rf $LOGFILE
 	
@@ -59,28 +81,17 @@ compile()
 
 execute()
 {
-	path=$1
-	program=$2
-
-	echo This is the program: $program
+	log_title
 
 	i=1
 	for test_file in $(ls $TESTS)
 	do
-		echo -n "$i: "
-		echo "\n\t--------------------- TEST $i ---------------------\n" >> $LOGFILE
-		echo -n "File: \"$test_file\" " >> $LOGFILE
 		$path/$program $TESTS/$test_file > $TEMPFILE 2>&1
 		
-		if [ "$(grep Error $TEMPFILE)" ]; then
-			echo -n "$GREEN"OK"$RESET " && echo ✅ >> $LOGFILE 
-			echo "-------- START OF OUTPUT --------" >> $LOGFILE
-			cat -e $TEMPFILE >> $LOGFILE
-			echo "--------- END OF OUTPUT ---------" >> $LOGFILE
-		else
-			echo -n "$RED"KO"$RESET " && echo ❌ >> $LOGFILE
-			valgrind $path/so_long $TESTS/$test_file >> $LOGFILE 2>&1
-		fi
+		output="$(grep Error $TEMPFILE)"
+		log_terminal $i $output
+		log_file $i $output $program
+
 		i=$(expr $i + 1)
 	done
 
@@ -91,12 +102,16 @@ execute()
 
 main()
 {
-	compile $1 $2
-	if [ "$2" = "bonus" ]; then
-		execute $1 $EXEC_BONUS
+	path=$1
+	rule=$2
+
+	compile
+	if [ "$rule" = "bonus" ]; then
+		program=$EXEC_BONUS
 	else 
-		execute $1 $EXEC
+		program=$EXEC
 	fi
+	execute 
 }
 
 main $1 $2
