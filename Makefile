@@ -16,27 +16,39 @@ PY = python3 -B
 MKFLAGS = --no-print-directory
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ FOLDERS _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
-PROJ = ../42_so_long
+PROJ = ../so_long
+GEN = maps/generated
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ RULES _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
-all: setup
 
-setup: 
+all: pull setup
+
+pull:
 	echo "[$(CYAN)    Git    $(RESET)] Checking for updates..."
 	git pull origin main
-	sh tester.sh $(PROJ)
-	
+
+setup: 
+	sh tester.sh $(PROJ) all
+
+bonus: pull setup_bonus
+
+setup_bonus:
+	sh tester.sh $(PROJ) bonus
+
 clean:
 	make clean $(MKFLAGS) -C $(PROJ)
 
 fclean: 
 	make fclean $(MKFLAGS) -C $(PROJ)
 
-gen:
+$(GEN):
+	mkdir -p maps/generated
+
+gen: $(GEN)
 	$(PY) generator.py
 
-c:
-	rm -rf maps/generated/*
+cleangen:
+	rm -rf maps/generated
 	
 .SILENT:
 re: fclean all

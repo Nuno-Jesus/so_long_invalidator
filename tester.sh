@@ -12,54 +12,107 @@ WHITE="\033[1;37m"
 
 LOGFILE="output.log"
 TEMPFILE="temp"
-TESTS="maps/invalid"
+INVALID_MAPS="maps/invalid"
 
-# Remove any previous generated output files
-rm -rf $LOGFILE
+EXEC="so_long"
+EXEC_BONUS="so_long_bonus"
 
-# Check for the existence of the Makefile
-if [ ! -f $1/Makefile ]; then
-	echo "[$RED"Error"$RESET] No Makefile was found in the \"$1\" directory"
-	return
-fi
+# $S1 = path to the project directory
+# $S2 = makefile rule to run
 
-echo "[$CYAN"Compilation"$RESET] Compiling your project..."
-make re -C $1 1> /dev/null
+log_title()
+{
+	echo "/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\\" >> $LOGFILE
+	echo "|==|                                                        |==|" >> $LOGFILE
+	echo "|==|                       $LOGFILE                       |==|" >> $LOGFILE
+	echo "|==|              $(date)              |==|" >> $LOGFILE
+	echo "|==|                                                        |==|" >> $LOGFILE
+	echo "\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/" >> $LOGFILE
+}
 
-if [ $? -ne 0  ]; then
-	echo "[$RED"Error"$RESET] Compilation failed"
-	return
-fi
-
-echo "[$CYAN"Compilation"$RESET] $GREEN"Success"$RESET" && sleep 0.5s
-
-
-echo "/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\\" >> $LOGFILE
-echo "|==|                                                        |==|" >> $LOGFILE
-echo "|==|                       $LOGFILE                       |==|" >> $LOGFILE
-echo "|==|              $(date)              |==|" >> $LOGFILE
-echo "|==|                                                        |==|" >> $LOGFILE
-echo "\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/" >> $LOGFILE
-
-i=1
-for test_file in $(ls $TESTS)
-do
-	echo -n "$i: "
-	echo "\n\t--------------------- TEST $i ---------------------\n" >> $LOGFILE
-	echo -n "File: \"$test_file\" " >> $LOGFILE
-	$1/so_long $TESTS/$test_file > $TEMPFILE 2>&1
-	
-	if [ "$(grep Error $TEMPFILE)" ]; then
-		echo -n "$GREEN"OK"$RESET " && echo ✅ >> $LOGFILE 
-		echo "-------- START OF OUTPUT --------" >> $LOGFILE
-		cat -e $TEMPFILE >> $LOGFILE
-		echo "--------- END OF OUTPUT ---------" >> $LOGFILE
+log_terminal()
+{
+	if [ $output ]; then
+		echo -n "$i: $GREEN"OK"$RESET "  
 	else
-		echo -n "$RED"KO"$RESET " && echo ❌ >> $LOGFILE
-		valgrind $1/so_long $TESTS/$test_file >> $LOGFILE 2>&1
+		echo -n "$i: $RED"KO"$RESET "
 	fi
-	i=$(expr $i + 1)
-done
+}
 
-rm -rf $TEMPFILE
-echo "\nPlease consult $CYAN$LOGFILE$RESET for detailed information"
+log_file()
+{
+	if [ $output ]; then
+		echo "\n[$WHITE#$i$RESET][$GREEN"SUCCESS"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
+	else
+		echo "\n[$WHITE#$i$RESET][$RED"FAILURE"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
+	fi
+
+	cat -e $TEMPFILE >> $LOGFILE
+
+	#If the output was not the expected one, output the valgrind results
+	if [ ! $output ]; then
+		valgrind $path/$program $INVALID_MAPS/$test_file >> $LOGFILE 2>&1
+	fi	
+}
+
+compile()
+{
+	# Remove any previous generated output files
+	rm -rf $LOGFILE
+	
+	# Check for the existence of the Makefile
+	if [ ! -f $path/Makefile ]; then
+		echo "[$RED"Error"$RESET] No Makefile was found in the \"$path\" directory"
+		exit 0
+	fi
+
+	# Start compilation
+	echo "[$CYAN"Compilation"$RESET] Compiling your project..."
+	make fclean -C $path 1> /dev/null
+	make $rule -C $path 1> /dev/null
+
+	# Checks the return value of the make command to assert a successful compilation
+	if [ $? -ne 0  ]; then
+		echo "[$RED"Error"$RESET] Compilation failed"
+		exit 0
+	fi
+
+	echo "[$CYAN"Compilation"$RESET] $GREEN"Success"$RESET" && sleep 0.5s
+}
+
+execute()
+{
+	log_title
+
+	i=1
+	for test_file in $(ls $INVALID_MAPS)
+	do
+		$path/$program $INVALID_MAPS/$test_file > $TEMPFILE 2>&1
+		
+		output="$(grep Error $TEMPFILE)"
+		log_terminal $i $output
+		log_file $i $output $program
+
+		i=$(expr $i + 1)
+	done
+
+	rm -rf $TEMPFILE
+	echo "\n\n\t--- Please consult $CYAN$LOGFILE$RESET for detailed information ---\n"
+
+}
+
+main()
+{
+	path=$1
+	rule=$2
+
+	compile
+	if [ "$rule" = "bonus" ]; then
+		program=$EXEC_BONUS
+	else 
+		program=$EXEC
+	fi
+	execute 
+}
+
+main $1 $2
