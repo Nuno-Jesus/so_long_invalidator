@@ -25,7 +25,7 @@ all: pull setup
 
 pull:
 	echo "[$(CYAN)    Git    $(RESET)] Checking for updates..."
-	# git pull origin main
+	git pull origin main
 
 setup: 
 	sh tester.sh $(PROJ) all
