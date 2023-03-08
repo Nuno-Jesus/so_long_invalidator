@@ -12,7 +12,7 @@ WHITE="\033[1;37m"
 
 LOGFILE="output.log"
 TEMPFILE="temp"
-TESTS="maps/invalid"
+INVALID_MAPS="maps/invalid"
 
 EXEC="so_long"
 EXEC_BONUS="so_long_bonus"
@@ -47,11 +47,11 @@ log_file()
 		echo "\n[$WHITE#$i$RESET][$RED"FAILURE"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
 	fi
 
-	# echo "======== START OF OUTPUT ========" >> $LOGFILE
 	cat -e $TEMPFILE >> $LOGFILE
-	# echo "========= END OF OUTPUT =========" >> $LOGFILE
+
+	#If the output was not the expected one, output the valgrind results
 	if [ ! $output ]; then
-		valgrind $path/$program $TESTS/$test_file >> $LOGFILE 2>&1
+		valgrind $path/$program $INVALID_MAPS/$test_file >> $LOGFILE 2>&1
 	fi	
 }
 
@@ -66,6 +66,7 @@ compile()
 		exit 0
 	fi
 
+	# Start compilation
 	echo "[$CYAN"Compilation"$RESET] Compiling your project..."
 	make fclean -C $path 1> /dev/null
 	make $rule -C $path 1> /dev/null
@@ -84,9 +85,9 @@ execute()
 	log_title
 
 	i=1
-	for test_file in $(ls $TESTS)
+	for test_file in $(ls $INVALID_MAPS)
 	do
-		$path/$program $TESTS/$test_file > $TEMPFILE 2>&1
+		$path/$program $INVALID_MAPS/$test_file > $TEMPFILE 2>&1
 		
 		output="$(grep Error $TEMPFILE)"
 		log_terminal $i $output
@@ -96,7 +97,7 @@ execute()
 	done
 
 	rm -rf $TEMPFILE
-	echo "\nPlease consult $CYAN$LOGFILE$RESET for detailed information"
+	echo "\n\n\t--- Please consult $CYAN$LOGFILE$RESET for detailed information ---\n"
 
 }
 
