@@ -89,6 +89,7 @@ def generate_map(filename, x, y) -> None:
 
 	f = open(filename, "x")
 	for line in contents:
+		f.write("".join(line) + '\n')
 		for char in line:
 			if char is WALL:
 				print(f'{LBLUE}{char}{RESET}', end = "")
@@ -101,6 +102,7 @@ def generate_map(filename, x, y) -> None:
 			else:
 				print(char, end = "")
 		print()
+	f.close()
 	print(f'\n\t --- The map was saved in {LRED}{filename}{RESET}. ---\n')
 
 if __name__ == "__main__" :
