@@ -16,8 +16,9 @@ PY = python3 -B
 MKFLAGS = --no-print-directory
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ FOLDERS _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
-PROJ = ../so_long
-GEN = maps/generated
+PROJ 	= ../so_long
+GEN 	= maps/generated
+SRCS 	= srcs
 
 #_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_ RULES _/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_/=\_
 
@@ -28,12 +29,12 @@ pull:
 	git pull origin main
 
 setup: 
-	sh tester.sh $(PROJ) all
+	sh $(SRCS)/tester.sh $(PROJ) all
 
 bonus: pull setup_bonus
 
 setup_bonus:
-	sh tester.sh $(PROJ) bonus
+	sh $(SRCS)/tester.sh $(PROJ) bonus
 
 clean:
 	make clean $(MKFLAGS) -C $(PROJ)
@@ -45,7 +46,7 @@ $(GEN):
 	mkdir -p maps/generated
 
 gen: $(GEN)
-	$(PY) generator.py
+	$(PY) $(SRCS)/generator.py
 
 cleangen:
 	rm -rf maps/generated
