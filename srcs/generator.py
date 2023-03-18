@@ -17,33 +17,29 @@ WALL_PROBABILITY = 0.80
 COIN_PROBABILITY = 0.80
 
 #! Entities
-WALL = "1"
-PLAYER = "P"
-COIN = "C"
-EXIT = "E"
-EMPTY = "0"
+WALL = '1'
+PLAYER = 'P'
+COIN = 'C'
+EXIT = 'E'
+EMPTY = '0'
 
 def generate_coins(contents, x, y) -> None:
 	num_coins = random.randint(0, math.floor((max(x, y) * COIN_PROBABILITY)))
 	print(f"Num coins: {num_coins}")
 
 	for i in range(0, num_coins):
-		cy = random.randint(1, y - 2)
-		cx = random.randint(1, x - 2)
+		cx, cy = random.randint(1, x - 2), random.randint(1, y - 2)
 		
-		#print(f"Coin (X/Y): {[cx, cy]}")
-		if contents[cy][cx] == '0':
-			contents[cy][cx] = 'C'
+		if contents[cy][cx] == EMPTY:
+			contents[cy][cx] = COIN
 
 def generate_player_and_exit(contents, x, y) -> None:
-	py = random.randint(1, y - 2)
-	px = random.randint(1, x - 2)
+	px, py = random.randint(1, x - 2), random.randint(1, y - 2)
 
-	print(f"Player (X/Y): {[px, py]}")
-	ey = random.randint(1, y - 2)
-	ex = random.randint(1, x - 2)
+	#print(f"Player (X/Y): {[px, py]}")
+	ex, ey = random.randint(1, x - 2), random.randint(1, y - 2)
 
-	print(f"Exit (X/Y): {[ex, ey]}")
+	#print(f"Exit (X/Y): {[ex, ey]}")
 	contents[py][px] = 'P'
 	contents[ey][ex] = 'E'
 
@@ -52,13 +48,13 @@ def get_random_unvisited_node(visited, x, y):
 	unvisited_nodes = []
 
 	if not visited[y - 1][x]:
-		unvisited_nodes.append([y - 1, x])
+		unvisited_nodes.append([x, y - 1])
 	if not visited[y + 1][x]:
-		unvisited_nodes.append([y + 1, x])
+		unvisited_nodes.append([x, y + 1])
 	if not visited[y][x - 1]:
-		unvisited_nodes.append([y, x - 1])
+		unvisited_nodes.append([x - 1, y])
 	if not visited[y][x + 1]:
-		unvisited_nodes.append([y, x + 1])
+		unvisited_nodes.append([x + 1, y])
 	if len(unvisited_nodes) < 2:
 		return None
 	return unvisited_nodes[random.randint(0, len(unvisited_nodes) - 1)]
@@ -69,10 +65,9 @@ def randomized_dfs(contents, x, y, visited):
 	pos = get_random_unvisited_node(visited, x, y)
 
 	while pos != None:
-		randomized_dfs(contents, pos[1], pos[0], visited)
+		randomized_dfs(contents, pos[0], pos[1], visited)
 		pos = get_random_unvisited_node(visited, x, y)
 		
-
 def generate_walls(contents, x, y):
 	visited = []
 	visited.append([True for _ in range (0, x)])
@@ -81,23 +76,32 @@ def generate_walls(contents, x, y):
 	visited.append([True for _ in range (0, x)])
 
 	# print(visited)
-	start_x, start_y = random.randint(1, x - 1), random.randint(1, y - 1)
+	start_x, start_y = random.randint(1, x - 2), random.randint(1, y - 2)
 	randomized_dfs(contents, start_x, start_y, visited)
 
 	
 def generate_map(filename, x, y) -> None:
 	contents = [[WALL for _ in range(0, x)] for _ in range(0, y)]
 
-	generate_player_and_exit(contents, x, y)
-	generate_coins(contents, x, y)
 	generate_walls(contents, x, y)
+	generate_coins(contents, x, y)
+	generate_player_and_exit(contents, x, y)
 
 	f = open(filename, "x")
 	for line in contents:
-		print("".join(line), end = '\n') 
-		f.write("".join(line) + '\n')
-	f.close()
-	print(f'The map was saved in {LRED}{filename}{RESET}.')
+		for char in line:
+			if char is WALL:
+				print(f'{LBLUE}{char}{RESET}', end = "")
+			elif char is COIN:
+				print(f'{LYELLOW}{char}{RESET}', end = "")
+			elif char is EXIT:
+				print(f'{LGREEN}{char}{RESET}', end = "")
+			elif char is PLAYER:
+				print(f'{LRED}{char}{RESET}', end = "")
+			else:
+				print(char, end = "")
+		print()
+	print(f'\n\t --- The map was saved in {LRED}{filename}{RESET}. ---\n')
 
 if __name__ == "__main__" :
 	n = 1
