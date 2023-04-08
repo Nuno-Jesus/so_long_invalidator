@@ -22,12 +22,11 @@ EXEC_BONUS="so_long_bonus"
 
 log_title()
 {
-	echo "/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\\" >> $LOGFILE
-	echo "|==|                                                        |==|" >> $LOGFILE
-	echo "|==|                       $LOGFILE                       |==|" >> $LOGFILE
-	echo "|==|              $(date)              |==|" >> $LOGFILE
-	echo "|==|                                                        |==|" >> $LOGFILE
-	echo "\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/" >> $LOGFILE
+	echo "\t/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\-/==\\" >> $LOGFILE
+	echo "\t|==|                                                        |==|" >> $LOGFILE
+	echo "\t|==|                       output.log                       |==|" >> $LOGFILE
+	echo "\t|==|                                                        |==|" >> $LOGFILE
+	echo "\t\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/-\==/" >> $LOGFILE
 }
 
 log_terminal()
@@ -46,13 +45,8 @@ log_file()
 	else
 		echo "\n[$WHITE#$i$RESET][$RED"FAILURE"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
 	fi
-
-	cat -e $TEMPFILE >> $LOGFILE
-
-	#If the output was not the expected one, output the valgrind results
-	if [ ! $output ]; then
-		valgrind $path/$program $INVALID_MAPS/$test_file >> $LOGFILE 2>&1
-	fi	
+	valgrind $path/$program $INVALID_MAPS/$test_file >> $LOGFILE 2>&1
+	echo "\n\t------------------------------------------------------------" >> $LOGFILE	
 }
 
 compile()
@@ -90,14 +84,14 @@ execute()
 		$path/$program $INVALID_MAPS/$test_file > $TEMPFILE 2>&1
 		
 		output="$(grep Error $TEMPFILE)"
-		log_terminal $i $output
-		log_file $i $output $program
+		log_terminal
+		log_file
 
 		i=$(expr $i + 1)
 	done
 
 	rm -rf $TEMPFILE
-	echo "\n\n\t--- Please consult $CYAN$LOGFILE$RESET for detailed information ---\n"
+	echo "\n\n\t--- Use $RED"cat"$RESET $CYAN"$LOGFILE"$RESET for detailed information ---\n"
 
 }
 
