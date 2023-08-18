@@ -31,7 +31,8 @@ log_title()
 
 log_terminal()
 {
-	if [ $output ]; then
+	# If the Error string was found, output is not empty
+	if [ "$output" ]; then
 		echo -n "$i: $GREEN"OK"$RESET "  
 	else
 		echo -n "$i: $RED"KO"$RESET "
@@ -40,7 +41,8 @@ log_terminal()
 
 log_file()
 {
-	if [ $output ]; then
+	# If the Error string was found, output is not empty
+	if [ "$output" ]; then
 		echo "\n[$WHITE#$i$RESET][$GREEN"SUCCESS"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
 	else
 		echo "\n[$WHITE#$i$RESET][$RED"FAILURE"$RESET] $CYAN$test_file$RESET\n" >> $LOGFILE 
@@ -71,7 +73,7 @@ compile()
 		exit 0
 	fi
 
-	echo "[$CYAN"Compilation"$RESET] $GREEN"Success"$RESET" && sleep 0.5s
+	echo "[$CYAN"Compilation"$RESET] $GREEN"Success"$RESET"
 }
 
 execute()
